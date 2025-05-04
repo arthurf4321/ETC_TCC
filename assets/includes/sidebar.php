@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-purple elevation-4" style="background-color:rgb(32, 31, 32);">
 
     <div class="brand-link d-flex justify-content-between align-items-center">
-        <a href="" class="brand-text font-weight-light" style="color: white !important; margin-left: 15px;">
+        <a href="" class="brand-text font-weight-light" style="color: #FFD700 !important; margin-left: 15px;">
             PéDeAçai
         </a>
         <a href="../home.php" class="btn btn-danger btn-sm mr-2 d-none d-md-inline" title="Sair">
@@ -23,7 +23,7 @@
 
                 <li class="nav-item menu-close">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-file-pdf text-warning"></i>
+                        <i class="nav-icon fas fa-file-pdf text-warning text-white"></i>
                         <p>
                             Emitir Relatórios
                             <i class="right fas fa-angle-left"></i>

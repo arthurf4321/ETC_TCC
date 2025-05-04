@@ -8,9 +8,9 @@ include(__DIR__ . '/../php/config/db.php');
     <!-- Botão sidebar Para responsividade. Importante !!! -->
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #7b1fa2;">
-                <i class="fas fa-bars" style="color: #7b1fa2;"></i>
-                <span class="d-none d-md-inline ml-1" style="color: #7b1fa2">Menu</span>
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #FFD700;">
+                <i class="fas fa-bars" style="color: #FFD700;"></i>
+                <span class="d-none d-md-inline ml-1" style="color: #FFD700">Menu</span>
             </a>
         </li>
     </ul>
@@ -18,9 +18,9 @@ include(__DIR__ . '/../php/config/db.php');
     <!-- icone que fica o usuário que está logado a direita -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #7b1fa2;">
-                <i class="fas fa-user-circle mr-1" style="color: #7b1fa2;"></i>
-                <span class="d-none d-md-inline" style="color: #7b1fa2;">
+            <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #FFD700;">
+                <i class="fas fa-user-circle mr-1" style="color: #FFD700;"></i>
+                <span class="d-none d-md-inline" style="color: #FFD700;">
                     <?= htmlspecialchars($_SESSION['funcionario']['nome'] ?? 'Funcionario') ?>
                 </span>
             </a>
