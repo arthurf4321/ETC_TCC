@@ -1,0 +1,96 @@
+body {
+    background-color: #F3DDFE;
+    color: #2D2D2D;
+    font-family: 'Arial', sans-serif;
+}
+
+.main-sidebar {
+    background-color: #4a1561 !important;
+    color: #fff;
+}
+
+.main-sidebar .nav-link {
+    color: #fff !important;
+}
+
+.main-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.brand-link {
+    background-color: #591875 !important; 
+    color: #FFD700 !important;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.main-header {
+    background-color: #e9d5f3 !important;
+    border-bottom: 1px solid #ccc;
+    color: #3C0A6D !important;
+}
+
+.navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link {
+    color: #3C0A6D !important;
+    font-weight: 500;
+}
+
+.content-wrapper {
+    background-color: #F3DDFE;
+    margin-top: 56px;
+    margin-left: 250px;
+    min-height: calc(100vh - 56px);
+    padding: 20px;
+}
+
+.sidebar-collapse .content-wrapper {
+    margin-left: 0;
+}
+
+.btn-funcionarios {
+    background-color: #5A076E;
+    color: white;
+    font-weight: 500;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.btn-funcionarios:hover {
+    background-color: #4B005E;
+}
+
+.btn-clientes {
+    background-color: #228B22;
+    color: white;
+    font-weight: 500;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.btn-clientes:hover {
+    background-color: #1e7e1e;
+}
+
+.btn-produtos {
+    background-color: #FFD700;
+    color: black;
+    font-weight: 500;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.btn-produtos:hover {
+    background-color: #e6c200;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}

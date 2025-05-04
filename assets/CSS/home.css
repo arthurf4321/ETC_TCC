@@ -1,0 +1,234 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-image: url(../imgs/Imagem\ do\ WhatsApp\ de\ 2025-04-25\ à\(s\)\ 18.02.49_e4ff5c27.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* --------------------------
+   AdminLTE Header e Sidebar 
+----------------------------- */
+
+body:not(.sidebar-collapse) .main-header {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.main-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.content-wrapper {
+    margin-top: 56px;
+    margin-left: 250px;
+    min-height: calc(100vh - 56px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: transparent !important;
+}
+
+.sidebar-collapse .content-wrapper {
+    margin-left: 0 !important;
+}
+
+/* --------------------------
+        Estilo Central
+----------------------------- */
+.central-container {
+    width: 100%;
+    max-width: 400px; 
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transform: translateX(-100px); 
+}
+
+.login-logo {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.8s ease;
+}
+
+.card-body {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+}
+
+.btn-block {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* --------------------------
+   Dropdown & User Photo
+----------------------------- */
+.user-menu {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.user-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 1060;
+    min-width: 160px;
+    padding: 10px;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    margin-bottom: 10px;
+}
+
+.dropdown-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+/* --------------------------
+     Navegação em árvore
+----------------------------- */
+.nav-treeview {
+    padding-left: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-treeview .nav-link {
+    padding: 0.5rem 1rem;
+}
+
+.nav-treeview .nav-item {
+    margin: 2px 0;
+}
+
+.nav-treeview .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.nav-sidebar .menu-open > .nav-treeview {
+    display: block;
+}
+
+.menu-open .fa-angle-left {
+    transform: rotate(-90deg);
+    transition: transform 0.3s ease;
+}
+
+/* --------------------------
+     Responsividade
+----------------------------- */
+@media (max-width: 767.98px) {
+    .main-sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1038;
+        height: 100vh;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-open .main-sidebar {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1037;
+    }
+
+    .sidebar-open .sidebar-overlay {
+        display: block;
+    }
+
+    .content-wrapper,
+    .main-header {
+        margin-left: 0 !important;
+    }
+
+    .brand-link {
+        padding: 10px !important;
+    }
+
+    .central-container {
+        margin: 0 10px;
+        transform: none;
+    }
+
+    .user-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dropdown-menu {
+        top: 50px;
+    }
+}
+
+.full-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 56px);
+    padding: 20px;
+}

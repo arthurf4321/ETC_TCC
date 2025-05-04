@@ -1,0 +1,110 @@
+body {
+    background-image: url(../imgs/54481.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+legend {
+    color: #141414;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+fieldset {
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #fffffe;
+    background-color: #fffffe;
+    border-radius: 15px;
+    width: 450px;
+    height: 500px;
+    margin-left: 35%;
+    margin-top: 6%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+form {
+    width: 100%;
+}
+
+input {
+    text-align: center;
+    width: 90%;
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-login {
+    width: 90%;
+    height: 40px;
+    background-color: #6A1B9A;
+    color: #fffffe;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: #591781;
+}
+
+#linkRedirecionamento {
+    color: #707780;
+    text-decoration: none;
+}
+
+#linkRedirecionamento:hover {
+    text-decoration: underline;
+}
+
+.social-login{
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+}
+
+.google-btn {
+    margin-top: 20px;
+    width: 42px;
+    height: 42px;
+    border: #707780;
+    border-radius: 20px;
+}
+
+.google-btn:hover{
+    background-color: rgb(204, 206, 211);
+}
+
+.github-btn {
+    margin-top: 20px;
+    width: 42px;
+    height: 42px;
+    border: #94a1b2;
+    border-radius: 20px;
+}
+
+.github-btn:hover{
+    background-color: rgb(204, 206, 211);
+}
+
+.linkedin-btn {
+    margin-top: 20px;
+    width: 42px;
+    height: 42px;
+    border: #94a1b2;
+    border-radius: 20px;
+}
+
+.linkedin-btn:hover{
+    background-color: rgb(204, 206, 211);
+}

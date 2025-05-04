@@ -1,0 +1,133 @@
+body {
+    background-image: url(../imgs/54481.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+legend {
+    color: #141414;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px; 
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 4%;
+}
+
+fieldset {
+    text-align: center;
+    padding: 30px;
+    border: 2px solid #fffffe;
+    background-color: #fffffe;
+    border-radius: 15px 0 0 15px; 
+    width: 450px;
+    height: 530px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5);
+    margin-right: -2px; 
+}
+
+input, select {
+    width: 90%;  
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn-cadastro {
+    margin-left: 18px;
+    width: 90%; 
+    height: 40px;
+    background-color: #6A1B9A;
+    color: #fffffe;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.btn-cadastro:hover {
+    background-color: #54167a;
+}
+
+#linkRedirecionamento {
+    margin-left: 19px;
+    display: block;
+    margin-top: 10px;
+    color: #707780;
+    text-decoration: none;
+    width: 90%;
+    text-align: center; 
+}
+
+#linkRedirecionamento:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    text-align: center;
+    padding: 30px;  
+    background-color: #dbdada;
+    border-radius: 0 15px 15px 0; 
+    width: 250px;
+    height: 530px;
+    border: 2px solid #dbdada;
+    border-left: none; 
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5); 
+}
+
+.social-login h2 {
+    font-size: 1.2em;
+    color: #141414;
+    margin-bottom: 20px;  
+    margin-top: 20px; 
+}
+
+.social-btn {
+    width: 90%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.google-btn {
+    background-color: rgb(255, 255, 255);
+}
+
+.github-btn {
+    background-color: rgb(255, 255, 255);
+}
+
+.linkedin-btn {
+    background-color: rgb(255, 255, 255);
+}
+
+.social-btn:hover {
+    background-color: rgb(243, 242, 242);
+    opacity: 0.9;
+}
