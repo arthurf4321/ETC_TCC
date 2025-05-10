@@ -1,3 +1,6 @@
+/* --------------------------
+   Configurações Base
+----------------------------- */    
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,228 +10,200 @@
 html, body {
     height: 100%;
     font-family: 'Source Sans Pro', sans-serif;
-    background-image: url(../imgs/BackGroud.jpg);
+    background: url(../imgs/BackGroud.jpg) no-repeat center center fixed;
     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
 }
 
-/* --------------------------
-   AdminLTE Header e Sidebar 
------------------------------ */
-
-body:not(.sidebar-collapse) .main-header {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-}
-
-.main-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-}
-
-.content-wrapper {
-    margin-top: 56px;
-    margin-left: 250px;
-    min-height: calc(100vh - 56px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    background-color: transparent !important;
-}
-
-.sidebar-collapse .content-wrapper {
-    margin-left: 0 !important;
-}
-
-/* --------------------------
-        Estilo Central
------------------------------ */
-.central-container {
-    width: 100%;
-    max-width: 400px; 
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transform: translateX(-100px); 
-}
-
-.login-logo {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-}
-
-.card {
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.8s ease;
-}
-
-.card-body {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-}
-
-.btn-block {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-block:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* --------------------------
-   Dropdown & User Photo
------------------------------ */
-.user-menu {
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    z-index: 1050;
-}
-
-.user-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 60px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    z-index: 1060;
-    min-width: 160px;
-    padding: 10px;
-}
-
-.dropdown-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.dropdown-menu li {
-    margin-bottom: 10px;
-}
-
-.dropdown-menu li:last-child {
-    margin-bottom: 0;
-}
-
-.dropdown-menu a {
+a {
+    color: inherit;
     text-decoration: none;
-    color: #333;
-    display: block;
-    padding: 6px 12px;
-    border-radius: 4px;
 }
 
-.dropdown-menu a:hover {
-    background-color: #f0f0f0;
+a:hover {
+    color: inherit;
 }
 
 /* --------------------------
-     Navegação em árvore
+   Container Principal
 ----------------------------- */
-.nav-treeview {
-    padding-left: 25px;
-    transition: all 0.3s ease-in-out;
-}
-
-.nav-treeview .nav-link {
-    padding: 0.5rem 1rem;
-}
-
-.nav-treeview .nav-item {
-    margin: 2px 0;
-}
-
-.nav-treeview .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-}
-
-.nav-sidebar .menu-open > .nav-treeview {
-    display: block;
-}
-
-.menu-open .fa-angle-left {
-    transform: rotate(-90deg);
-    transition: transform 0.3s ease;
-}
-
-/* --------------------------
-     Responsividade
------------------------------ */
-@media (max-width: 767.98px) {
-    .main-sidebar {
-        transform: translateX(-100%);
-        position: fixed;
-        z-index: 1038;
-        height: 100vh;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .sidebar-open .main-sidebar {
-        transform: translateX(0);
-    }
-
-    .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0,0.5);
-        z-index: 1037;
-    }
-
-    .sidebar-open .sidebar-overlay {
-        display: block;
-    }
-
-    .content-wrapper,
-    .main-header {
-        margin-left: 0 !important;
-    }
-
-    .brand-link {
-        padding: 10px !important;
-    }
-
-    .central-container {
-        margin: 0 10px;
-        transform: none;
-    }
-
-    .user-photo {
-        width: 40px;
-        height: 40px;
-    }
-
-    .dropdown-menu {
-        top: 50px;
-    }
-}
-
 .full-center {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 56px);
+    min-height: 100vh;
     padding: 20px;
+    text-align: center;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    background-color: transparent !important;
+}
+
+.welcome-container {
+    width: 100%;
+    max-width: 500px;
+    margin-left: -160px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.welcome-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.welcome-header h1 i {
+    margin-right: 10px;
+    color: #FFC107;
+}
+
+.role-badge {
+    display: inline-block;
+    background-color: #6A1B9A;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* --------------------------
+   Card de Dashboard
+----------------------------- */
+.dashboard-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border: none;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+/* --------------------------
+   Botões de Acesso
+----------------------------- */
+.access-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-main-access {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #6A1B9A;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-main-access:hover {
+    background-color: #591781;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(106, 27, 154, 0.3);
+}
+
+.btn-main-access i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.btn-main-access span {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.btn-main-access small {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-secondary-access {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    background-color: #f1f1f1;
+    color: #6A1B9A;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-secondary-access:hover {
+    background-color: #d8cbe2;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary-access i {
+    margin-right: 8px;
+    color: #6A1B9A;
+}
+
+/* --------------------------
+   Botão de Logout
+----------------------------- */
+.logout-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E53935;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-logout:hover {
+    background-color: #C62828;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-logout i {
+    margin-right: 8px;
+}
+
+/* --------------------------
+   Animações
+----------------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

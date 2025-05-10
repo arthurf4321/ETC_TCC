@@ -12,17 +12,20 @@ $cargosPermitidos = [
     'gerente' => [
         'página' => '../pages/Gerente/pagGerente.php',
         'permissao' => 'total',
-        'descricao' => 'Gerenciamento completo do sistema.'
+        'descricao' => 'Gerenciamento completo do sistema',
+        'icone' => 'fas fa-user-shield'
     ],
     'preparador' => [
         'página' => '../pages/Preparador/pagPreparador.php',
         'permissao' => 'preparo',
-        'descricao' => 'Gerencia pedidos em andamento.'
+        'descricao' => 'Gerencia pedidos em andamento',
+        'icone' => 'fas fa-utensils'
     ],
     'caixa' => [
         'página' => '../pages/Caixa/pagCaixa.php',
         'permissao' => 'vendas',
-        'descricao' => 'Gerencia pagamentos e pedidos.'
+        'descricao' => 'Gerencia pagamentos e pedidos',
+        'icone' => 'fas fa-cash-register'
     ]
 ];
 ?>
@@ -31,51 +34,54 @@ $cargosPermitidos = [
 <html lang="pt-br">
 <head>
     <?php include '../../includes/head.php'; ?>
-    <link rel="stylesheet" href="../../CSS/home.css">
-    <link rel="icon" href="../../../assets/imgs/favicon.ico"  sizes="16x16 32x32 48x48" type="image/x-icon">
-    <title></title>
+    <link rel="stylesheet" href="../../CSS/home.css?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="../../../assets/imgs/favicon.ico" sizes="16x16 32x32 48x48" type="image/x-icon">
+    <title>Dashboard - <?= ucfirst($funcionarioCargo) ?></title>
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
 
     <div class="content-wrapper full-center">
-        <div class="central-container">
-            <div class="login-logo">
-                <b>Bem-vindo, <?php echo htmlspecialchars($_SESSION['nome']); ?>!</b>
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-hand-sparkles"></i> Bem-vindo, <?php echo htmlspecialchars($_SESSION['nome']); ?>!</h1>
+                <p class="role-badge"><?= ucfirst($funcionarioCargo) ?></p>
             </div>
 
-            <div class="card">
-                <div class="card-body login-card-body text-center">
-                    <p class="login-box-msg">
-                        Você está logado como <strong><?= ucfirst($funcionarioCargo) ?></strong>
-                    </p>
+            <div class="dashboard-card">
+                <div class="card-body">
+                    <div class="access-buttons">
+                        <?php if ($funcionarioCargo && isset($cargosPermitidos[$funcionarioCargo])): ?>
+                            <a href="<?= $cargosPermitidos[$funcionarioCargo]['página'] ?>" class="btn-main-access">
+                                <i class="<?= $cargosPermitidos[$funcionarioCargo]['icone'] ?>"></i>
+                                <span>Acessar Área do <?= ucfirst($funcionarioCargo) ?></span>
+                                <small><?= $cargosPermitidos[$funcionarioCargo]['descricao'] ?></small>
+                            </a>
+                        <?php endif; ?>
 
-                    <?php
-                    if ($funcionarioCargo && isset($cargosPermitidos[$funcionarioCargo])) {
-                        echo "<a href=\"{$cargosPermitidos[$funcionarioCargo]['página']}\" 
-                                style=\"background-color: #6A1B9A; border: 1px solid #6A1B9A;\" 
-                                class=\"btn btn-primary btn-block mb-2\">
-                                Ir para área de " . ucfirst($funcionarioCargo) . "
-                              </a>";
-                    }
+                        <?php if ($funcionarioCargo === 'gerente'): ?>
+                            <div class="secondary-actions">
+                                <?php foreach ($cargosPermitidos as $cargo => $dados): ?>
+                                    <?php if ($cargo !== 'gerente'): ?>
+                                        <a href="<?= $dados['página'] ?>" class="btn-secondary-access">
+                                            <i class="<?= $dados['icone'] ?>"></i>
+                                            <?= ucfirst($cargo) ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
-                    if ($funcionarioCargo === 'gerente') {
-                        foreach ($cargosPermitidos as $cargo => $dados) {
-                            if ($cargo !== 'gerente') {
-                                echo "<a href=\"{$dados['página']}\" 
-                                        class=\"btn btn-secondary btn-block mb-2\">
-                                        Área do " . ucfirst($cargo) . "
-                                      </a>";
-                            }
-                        }
-                    }
-                    ?>
-
-                    <a href="../auth/logout.php" class="btn btn-danger btn-block">Sair</a>
+                    <div class="logout-section">
+                        <a href="../auth/logout.php" class="btn-logout">
+                            <i class="fas fa-sign-out-alt"></i> Sair do Sistema
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 </body>
 </html>
