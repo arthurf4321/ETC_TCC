@@ -18,10 +18,10 @@ fieldset {
     border: 2px solid #fffffe;
     background-color: #fffffe;
     border-radius: 15px;
-    width: 450px;
-    height: 500px;
-    margin-left: 35%;
-    margin-top: 6%;
+    width: 420px;
+    height: 425px;
+    margin-left: 37%;
+    margin-top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +56,7 @@ input {
 
 .btn-login:hover {
     background-color: #591781;
-}
+} 
 
 #linkRedirecionamento {
     color: #707780;
@@ -65,46 +65,4 @@ input {
 
 #linkRedirecionamento:hover {
     text-decoration: underline;
-}
-
-.social-login{
-    display: flex;
-    justify-content: center;
-    gap: 10px; 
-}
-
-.google-btn {
-    margin-top: 20px;
-    width: 42px;
-    height: 42px;
-    border: #707780;
-    border-radius: 20px;
-}
-
-.google-btn:hover{
-    background-color: rgb(204, 206, 211);
-}
-
-.github-btn {
-    margin-top: 20px;
-    width: 42px;
-    height: 42px;
-    border: #94a1b2;
-    border-radius: 20px;
-}
-
-.github-btn:hover{
-    background-color: rgb(204, 206, 211);
-}
-
-.linkedin-btn {
-    margin-top: 20px;
-    width: 42px;
-    height: 42px;
-    border: #94a1b2;
-    border-radius: 20px;
-}
-
-.linkedin-btn:hover{
-    background-color: rgb(204, 206, 211);
 }
