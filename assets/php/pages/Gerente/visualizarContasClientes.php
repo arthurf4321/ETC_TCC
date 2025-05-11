@@ -128,7 +128,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="modal fade" id="editarClienteModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="editarClienteModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header text-white" style="background-color: #7b1fa2;">
                 <h5 class="modal-title" id="editarClienteModalLabel"><i class="fas fa-user-edit mr-2"></i>Editar Cliente</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
@@ -157,7 +157,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times mr-1"></i> Cancelar
                     </button>
-                    <button type="submit" name="editar" class="btn btn-success">
+                    <button type="submit" name="editar" class="btn text-white" style="background-color: #7b1fa2;">
                         <i class="fas fa-save mr-1"></i> Salvar Alterações
                     </button>
                 </div>

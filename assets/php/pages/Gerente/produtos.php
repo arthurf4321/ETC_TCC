@@ -88,8 +88,8 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h3 class="mb-0" style="color: #7b1fa2;">
         <i class="fas fa-boxes mr-2"></i>Produtos Cadastrados
     </h3>
-    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#novoProdutoModal">
-        <i class="fas fa-plus mr-1"></i>Novo Produto
+    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#novoProdutoModal" style="background-color: #7b1fa2; border: #7b1fa2;">
+        <i class="fas fa-plus mr-1" style="background-color: #7b1fa2;"></i>Novo Produto
     </button>
 </div>
 
@@ -164,7 +164,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="modal fade" id="editarProdutoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="editarProdutoModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header text-white" style="background-color: #7b1fa2;">
                 <h5 class="modal-title" id="editarProdutoModalLabel"><i class="fas fa-edit mr-2"></i>Editar Produto</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
@@ -211,7 +211,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times mr-1"></i> Cancelar
                     </button>
-                    <button type="submit" name="editar" class="btn btn-success">
+                    <button type="submit" name="editar" class="btn text-white" style="background-color: #7b1fa2;">
                         <i class="fas fa-save mr-1"></i> Salvar Alterações
                     </button>
                 </div>
@@ -224,7 +224,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="modal fade" id="novoProdutoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="novoProdutoModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header text-white" style="background-color: #7b1fa2;">
                 <h5 class="modal-title" id="novoProdutoModalLabel"><i class="fas fa-plus-circle mr-2"></i>Novo Produto</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
@@ -235,7 +235,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="form-group">
                         <label for="nome"><i class="fas fa-tag mr-1"></i> Nome do Produto</label>
                         <input type="text" name="nome" id="nome" class="form-control" required
-                               placeholder="Ex: Açaí Tradicional, Granola, Leite Condensado">
+                               placeholder="Ex: Açaí Tradicional">
                         <small class="form-text text-muted">Nome completo do produto</small>
                     </div>
                     
@@ -275,7 +275,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times mr-1"></i> Cancelar
                     </button>
-                    <button type="submit" name="cadastrar" class="btn btn-success">
+                    <button type="submit" name="cadastrar" class="btn text-white" style="background-color: #7b1fa2;">
                         <i class="fas fa-plus-circle mr-1"></i> Cadastrar Produto
                     </button>
                 </div>
