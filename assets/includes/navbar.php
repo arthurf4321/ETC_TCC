@@ -1,6 +1,7 @@
 <?php 
 // Aqui, caso a sessão ainda não esteja iniciada ele inicia
 if (session_status() === PHP_SESSION_NONE) session_start();
+$funcionarioCargo = $_SESSION['funcionario_cargo'] ?? null;
 include(__DIR__ . '/../php/config/db.php');
 ?>
 
@@ -21,14 +22,14 @@ include(__DIR__ . '/../php/config/db.php');
             <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #FFD700;">
                 <i class="fas fa-user-circle mr-1" style="color: #FFD700;"></i>
                 <span class="d-none d-md-inline" style="color: #FFD700;">
-                    <?= htmlspecialchars($_SESSION['funcionario']['nome'] ?? 'Funcionario') ?>
+                    <?= ucfirst($funcionarioCargo) ?>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-header text-center">
-                    <strong><?= htmlspecialchars($_SESSION['funcionario']['nome'] ?? 'Funcionario') ?></strong>
+                    <strong><?php echo htmlspecialchars($_SESSION['nome']); ?></strong>
                     <div class="text-muted small">
-                        <?= ucfirst($_SESSION['funcionario']['perfil'] ?? 'Perfil') ?>
+                        <?= ucfirst($funcionarioCargo) ?>
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>

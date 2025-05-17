@@ -117,6 +117,7 @@ a:hover {
 
 .btn-main-access:hover {
     background-color: #591781;
+    color: #e3d2ee;
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(106, 27, 154, 0.3);
 }
