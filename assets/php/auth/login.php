@@ -24,10 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verifica se a senha está correta
         if (password_verify($senha, $user['senha'])) {
             // Salva os dados do Funcionario na sessão
+            $_SESSION['id'] = $user['id']; 
             $_SESSION['funcionario_id'] = $user['id'];
             $_SESSION['nome'] = $user['nome'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['funcionario_cargo'] = $user['cargo'];  // Adiciona o cargo do Funcionario na sessão
+            $_SESSION['funcionario_cargo'] = $user['cargo'];
+            $_SESSION['foto'] = $user['foto'];       // Adiciona o cargo do Funcionario na sessão
 
             // Envie uma resposta JSON de sucesso
             echo json_encode(['status' => 'success', 'message' => 'Login bem-sucedido']);
