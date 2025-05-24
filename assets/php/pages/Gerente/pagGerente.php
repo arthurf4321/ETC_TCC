@@ -177,16 +177,13 @@ verificarAcesso(['gerente']);
 
 <?php include '../../../includes/footer.php'; ?>
 <script>
-// Função para carregar páginas dinamicamente
 function carregarPagina(pagina) {
     const conteudoDinamico = $('#conteudoDinamico');
     const loader = $('#loader');
     
-    // Prevenir múltiplos carregamentos simultâneos
     if (conteudoDinamico.hasClass('loading')) return;
     conteudoDinamico.addClass('loading');
     
-    // Fechar todos os modais
     $('.modal').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
@@ -198,7 +195,6 @@ function carregarPagina(pagina) {
         url: pagina,
         method: 'GET',
         success: function(html) {
-            // Extrair apenas o conteúdo interno para evitar duplicação
             const novoConteudo = $(html).find('#conteudoDinamico').html();
             conteudoDinamico.html(novoConteudo || html);
             initDynamicContent();
@@ -222,18 +218,14 @@ function carregarPagina(pagina) {
     });
 }
 
-// Função para inicializar componentes dinâmicos
 function initDynamicContent() {
     console.log("Inicializando conteúdo dinâmico...");
     
-    // Configurar eventos de edição para todos os botões usando delegação
     $(document).off('click', '.btn-editar').on('click', '.btn-editar', function(e) {
         e.preventDefault();
         console.log("Botão editar clicado", $(this).data());
         
-        // Determinar qual modal abrir baseado nos dados disponíveis
         if ($(this).data('cargo')) {
-            // Edição de funcionário
             $('#editarFuncionarioModal #editId').val($(this).data('id'));
             $('#editarFuncionarioModal #editNome').val($(this).data('nome'));
             $('#editarFuncionarioModal #editEmail').val($(this).data('email'));
@@ -241,7 +233,7 @@ function initDynamicContent() {
             $('#editarFuncionarioModal').modal('show');
         } 
         else if ($(this).data('telefone')) {
-            // Edição de cliente
+
             $('#editarClienteModal #editId').val($(this).data('id'));
             $('#editarClienteModal #editNome').val($(this).data('nome'));
             $('#editarClienteModal #editEmail').val($(this).data('email'));
@@ -249,7 +241,7 @@ function initDynamicContent() {
             $('#editarClienteModal').modal('show');
         } 
         else if ($(this).data('categoria')) {
-            // Edição de produto
+
             $('#editarProdutoModal #editId').val($(this).data('id'));
             $('#editarProdutoModal #editNome').val($(this).data('nome'));
             $('#editarProdutoModal #editDescricao').val($(this).data('descricao'));
@@ -259,14 +251,13 @@ function initDynamicContent() {
         }
     });
 
-    // Configurar confirmação para exclusões - VERSÃO FINAL CORRIGIDA
+
     $(document).off('click', '.btn-excluir').on('click', '.btn-excluir', function(e) {
         e.preventDefault();
         const url = $(this).attr('href');
         const btn = $(this);
         const currentPage = window.location.pathname.split('/').pop() || 'visualizarContasClientes.php';
-        
-        // Mostrar loading no botão clicado
+
         btn.html('<i class="fas fa-spinner fa-spin"></i>');
         btn.prop('disabled', true);
         
@@ -295,11 +286,11 @@ function initDynamicContent() {
                                 timer: 1500,
                                 showConfirmButton: false
                             }).then(() => {
-                                // Recarregar usando o método específico da página
+
                                 if (window.carregarPagina) {
                                     carregarPagina(currentPage);
                                 } else {
-                                    // Fallback seguro que não causa duplicação
+
                                     $('#conteudoDinamico').load(currentPage + ' #conteudoDinamico > *', function() {
                                         initDynamicContent();
                                     });
@@ -326,45 +317,39 @@ function initDynamicContent() {
                     }
                 });
             } else {
-                // Restaurar botão se cancelar
+
                 btn.html('<i class="fas fa-trash-alt"></i>');
                 btn.prop('disabled', false);
             }
         });
     });
-    
-    // Configurar formulários AJAX
+  
     configurarFormulariosAJAX();
 }
 
-// Configurar todos os formulários AJAX
 function configurarFormulariosAJAX() {
-    // Formulário de edição de funcionário
+
     $('#formEditarFuncionario').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'visualizarContas.php', 'editar');
     });
-    
-    // Formulário de edição de cliente
+
     $('#formEditarCliente').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'visualizarContasClientes.php', 'editar');
     });
     
-    // Formulário de edição de produto
     $('#formEditarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'produtos.php', 'editar');
     });
     
-    // Formulário de cadastro de produto
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'produtos.php', 'cadastrar');
     });
 }
 
-// Função genérica para enviar formulários via AJAX
 function enviarFormularioAJAX(form, url, action) {
     const submitBtn = form.find('[type="submit"]');
     const originalText = submitBtn.html();
@@ -380,7 +365,6 @@ function enviarFormularioAJAX(form, url, action) {
         dataType: 'json',
         success: function(response) {
             if (response.status === 'success') {
-                // Fechar o modal antes de recarregar
                 modal.modal('hide');
                 
                 Swal.fire({
@@ -390,7 +374,7 @@ function enviarFormularioAJAX(form, url, action) {
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    // Recarregar o conteúdo após o modal estar completamente fechado
+
                     const currentPage = window.location.pathname.split('/').pop() || url.replace('.php', '') + '.php';
                     if (typeof carregarPagina === 'function') {
                         carregarPagina(currentPage);
@@ -420,17 +404,14 @@ function enviarFormularioAJAX(form, url, action) {
     });
 }
 
-// Inicializar quando o DOM estiver pronto
 $(document).ready(function() {
     initDynamicContent();
 });
 
-// Re-inicializar quando conteúdo for carregado via AJAX
 $(document).ajaxComplete(function() {
     initDynamicContent();
 });
 
-// Limpeza de modais quando fechados
 $(document).on('hidden.bs.modal', '.modal', function() {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();

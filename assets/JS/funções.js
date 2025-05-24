@@ -1,15 +1,13 @@
-// Função para inicializar todos os eventos
+
 function initDynamicContent() {
     console.log("Inicializando conteúdo dinâmico...");
-    
-    // Configurar eventos de edição para todos os botões usando delegação
+
     $(document).off('click', '.btn-editar').on('click', '.btn-editar', function(e) {
         e.preventDefault();
         console.log("Botão editar clicado", $(this).data());
         
-        // Determinar qual modal abrir baseado nos dados disponíveis
         if ($(this).data('cargo')) {
-            // Edição de funcionário
+
             $('#editarFuncionarioModal #editId').val($(this).data('id'));
             $('#editarFuncionarioModal #editNome').val($(this).data('nome'));
             $('#editarFuncionarioModal #editEmail').val($(this).data('email'));
@@ -17,7 +15,7 @@ function initDynamicContent() {
             $('#editarFuncionarioModal').modal('show');
         } 
         else if ($(this).data('telefone')) {
-            // Edição de cliente
+
             $('#editarClienteModal #editId').val($(this).data('id'));
             $('#editarClienteModal #editNome').val($(this).data('nome'));
             $('#editarClienteModal #editEmail').val($(this).data('email'));
@@ -25,7 +23,7 @@ function initDynamicContent() {
             $('#editarClienteModal').modal('show');
         } 
         else if ($(this).data('categoria')) {
-            // Edição de produto
+
             $('#editarProdutoModal #editId').val($(this).data('id'));
             $('#editarProdutoModal #editNome').val($(this).data('nome'));
             $('#editarProdutoModal #editDescricao').val($(this).data('descricao'));
@@ -35,7 +33,6 @@ function initDynamicContent() {
         }
     });
 
-    // Configurar confirmação para exclusões
     $(document).off('click', '.btn-excluir').on('click', '.btn-excluir', function(e) {
         e.preventDefault();
         const url = $(this).attr('href');
@@ -57,11 +54,9 @@ function initDynamicContent() {
     });
 }
 
-// Inicializar quando o DOM estiver pronto
 $(document).ready(function() {
     initDynamicContent();
     
-    // Debug: Verificar se modais estão carregados
     console.log("Modais disponíveis:", {
         funcionario: $('#editarFuncionarioModal').length > 0,
         cliente: $('#editarClienteModal').length > 0,
@@ -69,7 +64,6 @@ $(document).ready(function() {
     });
 });
 
-// Re-inicializar quando conteúdo for carregado via AJAX
 $(document).ajaxComplete(function() {
     initDynamicContent();
 });

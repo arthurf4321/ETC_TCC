@@ -71,17 +71,24 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </td>
                             <td class="text-center align-middle">
                                 <div class="btn-group" role="group">
+                                    <button onclick="verDetalhesPedido(<?= $pedido['id']; ?>)" 
+                                        class="btn btn-sm btn-info"
+                                        style="border-radius: 4px 0 0 4px;"
+                                        data-toggle="tooltip" title="Ver Detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+
                                     <button onclick="atualizarStatus(<?= $pedido['id']; ?>, 'preparando')" 
-                                       class="btn btn-sm btn-status"
-                                       style="background-color: #7b1fa2; color: white; border-radius: 4px 0 0 4px;"
-                                       data-toggle="tooltip" title="Marcar como Preparando">
+                                        class="btn btn-sm btn-status"
+                                        style="background-color: #7b1fa2; color: white; border-radius: 0;"
+                                        data-toggle="tooltip" title="Marcar como Preparando">
                                         <i class="fas fa-blender"></i>
                                     </button>
                                     
                                     <button onclick="atualizarStatus(<?= $pedido['id']; ?>, 'pronto')" 
-                                       class="btn btn-sm btn-status"
-                                       style="background-color: #66BB6A; color: white; border-radius: 0 4px 4px 0;"
-                                       data-toggle="tooltip" title="Marcar como Pronto">
+                                        class="btn btn-sm btn-status"
+                                        style="background-color: #66BB6A; color: white; border-radius: 0 4px 4px 0;"
+                                        data-toggle="tooltip" title="Marcar como Pronto">
                                         <i class="fas fa-check-circle"></i>
                                     </button>
                                 </div>
@@ -92,6 +99,23 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </div>
     </div>
+</div>
+
+<!-- Modal de Detalhes -->
+<div class="modal fade" id="modalDetalhesPedido" tabindex="-1" aria-labelledby="modalDetalhesLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #7b1fa2; color: white;">
+        <h5 class="modal-title" id="modalDetalhesLabel">Detalhes do Pedido</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="detalhesPedidoBody">
+        <p class="text-center">Carregando...</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -129,6 +153,17 @@ function atualizarStatus(id, status) {
     });
 }
 
+function verDetalhesPedido(id) {
+    $('#detalhesPedidoBody').html('<p class="text-center">Carregando...</p>');
+    $('#modalDetalhesPedido').modal('show');
+
+    $.get(`/TCC/assets/php/pages/preparador/detalhesPedido.php?id=${id}`, function(data) {
+        $('#detalhesPedidoBody').html(data);
+    }).fail(function() {
+        $('#detalhesPedidoBody').html('<p class="text-danger">Erro ao carregar os detalhes do pedido.</p>');
+    });
+}
+
 $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
 });
@@ -140,7 +175,6 @@ $(document).ready(function() {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(123, 31, 162, 0.15);
 }
-
 .table th {
     border-top: none;
     font-weight: 600;
@@ -148,22 +182,18 @@ $(document).ready(function() {
     font-size: 0.8rem;
     letter-spacing: 0.5px;
 }
-
 .table td {
     vertical-align: middle;
     border-top: 1px solid rgba(0,0,0,0.03);
 }
-
 .btn-status {
     transition: all 0.3s ease;
     padding: 0.35rem 0.75rem;
 }
-
 .btn-status:hover {
     transform: translateY(-2px);
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
 .badge {
     font-size: 0.8rem;
     font-weight: 500;

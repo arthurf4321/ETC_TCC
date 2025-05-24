@@ -1,7 +1,6 @@
 <?php
 include('../../config/db.php');
 
-// Verificar conexão
 if (!$pdo) {
     die("Erro na conexão com o banco de dados");
 }
@@ -27,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     $sql = "DELETE FROM clientes WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     
-    // Adicione headers JSON antes de qualquer output
+    
     header('Content-Type: application/json');
     
     if ($stmt->execute([$id])) {
         echo json_encode([
             'status' => 'success', 
             'message' => 'Cliente excluído com sucesso!',
-            'id' => $id // Adicione o ID para referência
+            'id' => $id 
         ]);
     } else {
         echo json_encode([
@@ -45,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     exit;
 }
 
-// Consulta para listar clientes
 $sql = "SELECT id, nome, email, telefone FROM clientes ORDER BY nome";
 $stmt = $pdo->prepare($sql);
 

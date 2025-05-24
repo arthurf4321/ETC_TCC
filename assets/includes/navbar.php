@@ -20,7 +20,7 @@ include(__DIR__ . '/../php/config/db.php');
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #FFD700;">
-                <i class="fas fa-user-circle mr-1" style="color: #FFD700;"></i>
+                <i class="" style="color: #FFD700;"></i>
                 <span class="d-none d-md-inline" style="color: #FFD700;">
                     <?= ucfirst($funcionarioCargo) ?>
                 </span>

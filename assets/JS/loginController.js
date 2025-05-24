@@ -5,13 +5,11 @@ document.addEventListener("DOMContentLoaded", function() {
         var email = document.getElementById('email').value.trim();
         var senha = document.getElementById('senha').value.trim();
 
-        // Verifica se os campos estão preenchidos
         if (email === "" || senha === "") {
             alert("Por favor, preencha todos os campos.");
             return false;
         }
 
-        // Envia os dados via AJAX
         fetch('../php/auth/login.php', {
             method: 'POST',
             body: new URLSearchParams({
@@ -19,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 senha: senha
             })
         })
-        .then(response => response.json())  // Espera a resposta como JSON
+        .then(response => response.json()) 
         .then(data => {
             if (data.status === 'success') {
                 window.location.href = '../php/pages/home.php';
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Erro ao fazer login:', error));
     }
 
-    // Adiciona o evento de submit no formulário
     var form = document.getElementById('formLogin');
     if (form) {
         form.addEventListener('submit', validarFormularioLogin);

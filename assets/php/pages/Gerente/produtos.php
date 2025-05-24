@@ -2,7 +2,6 @@
 include('../../config/db.php');
 session_start();
 
-// Atualizar produto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
     $id = $_POST['id'];
     $nome = $_POST['nome'];
@@ -20,9 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
     exit;
 }
 
-// Cadastrar novo produto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
-    // Debug: Verificar dados recebidos
     error_log(print_r($_POST, true));
     
     $nome = $_POST['nome'] ?? '';
@@ -30,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     $preco = $_POST['preco'] ?? 0;
     $categoria = $_POST['categoria'] ?? '';
 
-    // Validação básica
     if (empty($nome) || empty($categoria) || $preco <= 0) {
         echo json_encode([
             'status' => 'error', 
@@ -47,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
             echo json_encode([
                 'status' => 'success', 
                 'message' => 'Produto cadastrado com sucesso!',
-                'id' => $pdo->lastInsertId() // Retorna o ID inserido
+                'id' => $pdo->lastInsertId() 
             ]);
         } else {
             echo json_encode([
@@ -64,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     exit;
 }
 
-// Excluir produto
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     $id = $_GET['excluir'];
     $sql = "DELETE FROM produtos WHERE id = ?";
@@ -77,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     exit;
 }
 
-// Buscar produtos
 $sql = "SELECT id, nome, descricao, preco, categoria FROM produtos ORDER BY nome";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -285,30 +279,24 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <script>
-// Função para inicializar o modal e formulário
 function initProdutoModal() {
-    // Mostrar nome do arquivo selecionado
     $('.custom-file-input').on('change', function() {
         let fileName = $(this).val().split('\\').pop();
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
     
-    // Configurar o botão "Novo Produto"
     $(document).off('click', '[data-target="#novoProdutoModal"]').on('click', '[data-target="#novoProdutoModal"]', function(e) {
         e.preventDefault();
         $('#novoProdutoModal').modal('show');
     });
 
-    // Configurar o formulário de cadastro
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         
-        // Validação dos campos
         const nome = $('#nome').val().trim();
         const preco = parseFloat($('#preco').val());
         const categoria = $('#categoria').val();
         
-        // Verificar erros
         let errors = [];
         
         if (!nome) {
@@ -332,7 +320,6 @@ function initProdutoModal() {
             $('#categoria').removeClass('is-invalid');
         }
         
-        // Se houver erros, mostrar mensagem
         if (errors.length > 0) {
             Swal.fire({
                 icon: 'error',
@@ -342,16 +329,13 @@ function initProdutoModal() {
             return false;
         }
         
-        // Preparar dados do formulário
         const formData = $(this).serialize();
-        
-        // Configurar botão de submit
+       
         const submitBtn = $(this).find('[type="submit"]');
         const originalText = submitBtn.html();
         submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Cadastrando...');
         submitBtn.prop('disabled', true);
         
-        // Enviar via AJAX
         $.ajax({
             url: 'produtos.php',
             method: 'POST',
@@ -368,12 +352,10 @@ function initProdutoModal() {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        // Fechar modal e limpar formulário
                         $('#novoProdutoModal').modal('hide');
                         $('#formCadastrarProduto')[0].reset();
                         $('.custom-file-label').html('Escolher arquivo...');
                         
-                        // Recarregar a lista de produtos
                         if (typeof carregarPagina === 'function') {
                             carregarPagina('produtos.php');
                         } else {
@@ -403,7 +385,6 @@ function initProdutoModal() {
         });
     });
     
-    // Resetar formulário quando o modal for fechado
     $('#novoProdutoModal').on('hidden.bs.modal', function() {
         $('#formCadastrarProduto')[0].reset();
         $('.custom-file-label').html('Escolher arquivo...');
@@ -411,16 +392,13 @@ function initProdutoModal() {
     });
 }
 
-// Inicializar quando o conteúdo for carregado
 $(document).ready(function() {
     initProdutoModal();
 });
 
-// Se estiver sendo carregado via AJAX
 if (typeof initDynamicContent === 'function') {
     initDynamicContent();
 } else {
-    // Inicializar tooltips
     $('[data-toggle="tooltip"]').tooltip();
 }
 </script>
