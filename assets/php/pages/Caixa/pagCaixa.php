@@ -18,9 +18,13 @@ verificarAcesso(['caixa', 'gerente']);
             box-shadow: 0 4px 8px rgba(106, 27, 154, 0.2);
         }
 
-        .btn-fazer-pedido, .btn-registrar-cliente {
+        .btn-fazer-pedido, .btn-registrar-cliente, .btn-pedidos_prontos {
             background-color: #7b1fa2;
+            border: #7b1fa2;
             font-weight: bold;
+        }
+        .btn-pedidos_prontos:hover{
+            background-color: #7b1fa2;
         }
     </style>
 </head>
@@ -51,9 +55,13 @@ verificarAcesso(['caixa', 'gerente']);
                                 <button class="btn btn-block text-white btn-registrar-cliente" onclick="carregarPagina('formClientes.php')">
                                     <i class="fas fa-history"></i> Registrar Cliente
                                 </button>
+                            </div>                                                      
+                            <div class="col-md-4">
+                                <button class="btn btn-block text-white btn-pedidos_prontos" onclick="carregarPagina('pedidos_prontos.php')">
+                                    <i class="fas fa-check-circle"></i> Pedidos Prontos
+                                </button>
                             </div>
                         </div>
-
                         <div id="conteudoDinamico" class="p-3 bg-white rounded shadow-sm">
                             <p class="text-muted">Selecione uma das opções acima para visualizar os conteúdos.</p>
                         </div>
@@ -69,6 +77,7 @@ verificarAcesso(['caixa', 'gerente']);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <script src="../../../JS/funções.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 function carregarPagina(pagina) {
@@ -120,7 +129,7 @@ function initDynamicContent() {
         console.log("Botão editar clicado", $(this).data());
        
         if ($(this).data('cargo')) {
-o
+
             $('#editarFuncionarioModal #editId').val($(this).data('id'));
             $('#editarFuncionarioModal #editNome').val($(this).data('nome'));
             $('#editarFuncionarioModal #editEmail').val($(this).data('email'));
@@ -221,29 +230,34 @@ o
 
 function configurarFormulariosAJAX() {
 
+    // FORMULARIO EDITAR FUNCIONARIO - sem alerta especial
     $('#formEditarFuncionario').off('submit').on('submit', function(e) {
         e.preventDefault();
-        enviarFormularioAJAX($(this), 'visualizarContas.php', 'editar');
+        enviarFormularioAJAX($(this), 'visualizarContas.php', 'editar', false);
     });
     
-
+    // FORMULARIO EDITAR CLIENTE - mostra alerta sucesso
     $('#formEditarCliente').off('submit').on('submit', function(e) {
         e.preventDefault();
-        enviarFormularioAJAX($(this), 'visualizarContasClientes.php', 'editar');
+        enviarFormularioAJAX($(this), 'visualizarContasClientes.php', 'editar', true);
     });
 
+    // FORMULARIO EDITAR PRODUTO - sem alerta especial
     $('#formEditarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
-        enviarFormularioAJAX($(this), 'produtos.php', 'editar');
+        enviarFormularioAJAX($(this), 'produtos.php', 'editar', false);
     });
     
+    // FORMULARIO CADASTRAR PRODUTO - sem alerta especial
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
-        enviarFormularioAJAX($(this), 'produtos.php', 'cadastrar');
+        enviarFormularioAJAX($(this), 'produtos.php', 'cadastrar', false);
     });
 }
 
-function enviarFormularioAJAX(form, url, action) {
+// Função genérica para enviar formulários via AJAX
+// quarto parâmetro indica se deve mostrar alerta sucesso personalizado
+function enviarFormularioAJAX(form, url, action, mostrarAlertaSucesso) {
     const submitBtn = form.find('[type="submit"]');
     const originalText = submitBtn.html();
     const modal = form.closest('.modal');
@@ -260,20 +274,30 @@ function enviarFormularioAJAX(form, url, action) {
             if (response.status === 'success') {
                 modal.modal('hide');
                 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso!',
-                    text: response.message,
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
+                if (mostrarAlertaSucesso) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: response.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        const currentPage = window.location.pathname.split('/').pop() || url.replace('.php', '') + '.php';
+                        if (typeof carregarPagina === 'function') {
+                            carregarPagina(currentPage);
+                        } else {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    // Recarrega sem alerta especial
                     const currentPage = window.location.pathname.split('/').pop() || url.replace('.php', '') + '.php';
                     if (typeof carregarPagina === 'function') {
                         carregarPagina(currentPage);
                     } else {
                         location.reload();
                     }
-                });
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -307,6 +331,74 @@ $(document).ajaxComplete(function() {
 $(document).on('hidden.bs.modal', '.modal', function() {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
+});
+
+function carregarPedidosProntos() {
+    $.ajax({
+        url: '../../pages/Caixa/pedidos_prontos.php',
+        method: 'GET',
+        success: function (resposta) {
+            $('#container-pedidos-prontos').html(resposta);
+        },
+        error: function () {
+            $('#container-pedidos-prontos').html('<div class="alert alert-danger">Erro ao carregar pedidos prontos.</div>');
+        }
+    });
+}
+
+// Substitua esta função existente
+$(document).on('click', '.finalizar-pedido', function () {
+    const pedidoId = $(this).data('id');
+    const btn = $(this);
+    
+    btn.html('<i class="fas fa-spinner fa-spin"></i>');
+    btn.prop('disabled', true);
+    
+    Swal.fire({
+        title: 'Confirmar Finalização',
+        text: "Deseja finalizar o pedido #" + pedidoId + "?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, finalizar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.post('../../pages/Caixa/finalizar_pedido.php', { pedido_id: pedidoId }, function (resposta) {
+                if (resposta.trim() === 'sucesso') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Pedido finalizado com sucesso.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Recarrega o conteúdo dinâmico (pedidos_prontos.php)
+                        carregarPagina('pedidos_prontos.php');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Falha ao finalizar pedido.'
+                    });
+                }
+            }).fail(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Falha na comunicação com o servidor.'
+                });
+            }).always(function() {
+                btn.html('Finalizar');
+                btn.prop('disabled', false);
+            });
+        } else {
+            btn.html('Finalizar');
+            btn.prop('disabled', false);
+        }
+    });
 });
 </script>
 </body>

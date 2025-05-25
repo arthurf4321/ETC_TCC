@@ -19,10 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['pronto'])) {
 
 $sql = "SELECT p.id, p.cliente_id, p.status, p.total, p.data_pedido, c.nome AS cliente_nome 
         FROM pedidos p
-        JOIN clientes c ON p.cliente_id = c.id";
+        JOIN clientes c ON p.cliente_id = c.id
+        WHERE p.status IN ('preparando', 'pronto', 'recebido')";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <div class="card acai-theme">
