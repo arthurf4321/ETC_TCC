@@ -2,12 +2,10 @@
 include('../../config/db.php');
 session_start();
 
-// Configurações para upload de imagem
 $uploadDir = '../../../uploads/produtos/';
 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 $maxSize = 2 * 1024 * 1024; // 2MB
 
-// Função para lidar com o upload da imagem
 function handleImageUpload($file, $uploadDir, $allowedTypes, $maxSize) {
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return ['status' => 'error', 'message' => 'Erro no upload da imagem'];
@@ -40,13 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
     $categoria = $_POST['categoria'];
     $fotoAtual = $_POST['foto_atual'] ?? 'default.png';
 
-    // Processar upload de nova imagem se fornecida
     if (!empty($_FILES['foto']['name'])) {
         $upload = handleImageUpload($_FILES['foto'], $uploadDir, $allowedTypes, $maxSize);
         
         if ($upload['status'] === 'success') {
             $foto = $upload['filename'];
-            // Remover a imagem antiga se não for a padrão
             if ($fotoAtual !== 'default.png' && file_exists($uploadDir . $fotoAtual)) {
                 unlink($uploadDir . $fotoAtual);
             }
@@ -75,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     $categoria = $_POST['categoria'] ?? '';
     $foto = 'default.png';
 
-    // Processar upload de imagem se fornecida
     if (!empty($_FILES['foto']['name'])) {
         $upload = handleImageUpload($_FILES['foto'], $uploadDir, $allowedTypes, $maxSize);
         
@@ -122,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     $id = $_GET['excluir'];
-    // Obter informações do produto para remover a imagem
     $sql = "SELECT foto FROM produtos WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$id]);
@@ -131,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     $sql = "DELETE FROM produtos WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     if ($stmt->execute([$id])) {
-        // Remover a imagem se não for a padrão
         if ($produto && $produto['foto'] !== 'default.png' && file_exists($uploadDir . $produto['foto'])) {
             unlink($uploadDir . $produto['foto']);
         }
@@ -150,14 +143,13 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <style>
     .produto-img {
-        max-width: 90px;  /* Aumentei de 50px para 80px */
-        max-height: 90px; /* Aumentei de 50px para 80px */
+        max-width: 90px;  
+        max-height: 90px; 
         border-radius: 4px;
         object-fit: cover;
-        transition: transform 0.3s ease; /* Adicionei um efeito de hover opcional */
+        transition: transform 0.3s ease; 
     }
 
-    /* Efeito de zoom opcional ao passar o mouse */
     .produto-img:hover {
         transform: scale(1.2);
         z-index: 10;
@@ -418,7 +410,6 @@ function initProdutoModal() {
         $('#novoProdutoModal').modal('show');
     });
 
-    // Preview da imagem para novo produto
     $('#foto').on('change', function() {
         const file = this.files[0];
         if (file) {
@@ -434,7 +425,6 @@ function initProdutoModal() {
         }
     });
 
-    // Preview da imagem para edição
     $('#editFoto').on('change', function() {
         const file = this.files[0];
         if (file) {
@@ -449,7 +439,6 @@ function initProdutoModal() {
         }
     });
 
-    // Ao abrir o modal de edição, carregar a imagem atual
     $(document).on('click', '.btn-editar', function() {
         const foto = $(this).data('foto') || 'default.png';
         $('#editPreviewFoto').attr('src', '../../../assets/uploads/produtos/' + foto).show();

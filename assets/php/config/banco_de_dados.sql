@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump Atualizado com Relacionamentos de Funcionário
+-- phpMyAdmin SQL Dump 
 -- Banco de dados: `sistema_acai`
 
 CREATE DATABASE IF NOT EXISTS `sistema_acai` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -82,7 +82,7 @@ CREATE TABLE `pedidos` (
 
 -- --------------------------------------------------------
 
--- Tabela: produtos (ATUALIZADA COM CAMPO DE FOTO)
+-- Tabela: produtos 
 CREATE TABLE `produtos` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE `produtos` (
   `foto` varchar(255) DEFAULT 'default.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Produtos de exemplo (ATUALIZADOS COM CAMPO DE FOTO)
+-- Produtos de exemplo
 INSERT INTO `produtos` (`id`, `nome`, `descricao`, `preco`, `categoria`, `foto`) VALUES
 (1, 'açai 300ml', 'Açaí tradicional na tigela de 300ml', 10.00, 'açaí', 'acai_300ml.jpg'),
 (2, 'açai 500ml', 'Açaí tradicional na tigela de 500ml', 15.00, 'açaí', 'acai_500ml.jpg'),
