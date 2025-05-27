@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header" style="background-color: #7b1fa2; color: white;">
-        <h3 class="card-title">Novo Pedido</h3>
+        <h3 class="card-title" style="color: white;">Novo Pedido</h3>
     </div>
     <div class="card-body">
         <form method="POST" action="registrarPedido.php" id="formPedido">
@@ -13,10 +13,8 @@
             <div id="produtosContainer">
                 <div class="produtoItem mb-3">
                     <label>Produto:</label>
-                    <input type="text" class="form-control produto" autocomplete="off" required>
+                    <input type="text" class="form-control produto" autocomplete="off" data-toggle="modal" data-target="#modalProdutos" readonly required>
                     <input type="hidden" name="produto_id[]" class="produto_id">
-
-                    <div class="list-group mt-1 listaProdutos" style="position: absolute; z-index: 1000;"></div>
 
                     <label class="mt-2">Quantidade:</label>
                     <input type="number" name="quantidade[]" class="form-control quantidade" min="1" required>
@@ -41,6 +39,204 @@
     </div>
 </div>
 
+<!-- Modal para seleção de produtos -->
+<div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="modalProdutosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalProdutosLabel">Selecione um Produto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="listaProdutosModal">
+                    <!-- Produtos serão carregados aqui via AJAX -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilo geral do card principal */
+    
+    label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    .form-control {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s;
+        height: 42px;
+    }
+    
+    .form-control:focus {
+        border-color: #7b1fa2;
+        box-shadow: 0 0 0 0.2rem rgba(123, 31, 162, 0.15);
+    }
+    
+    /* Estilo específico para o campo de produto */
+    .produto {
+        background-color: #ffffff !important;
+        cursor: pointer;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%237b1fa2" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 35px;
+    }
+    
+    /* Estilo para os itens de produto */
+    .produtoItem {
+        background-color: #ffffff;
+        padding: 1.25rem;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        margin-bottom: 1.25rem;
+        transition: all 0.3s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+    
+    .produtoItem:hover {
+        border-color: #d1d1d1;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Estilo para os botões */
+    .btn {
+        padding: 0.5rem 1rem; /* Reduzido de 0.75rem 1.5rem */
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: none;
+        font-size: 0.9rem; /* Adicionado tamanho de fonte menor */
+    }
+    
+    
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        transform: translateY(-1px); /* Efeito hover mais sutil */
+    }
+
+        /* Modal de produtos */
+    .modal-content {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .modal-title {
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .modal-footer {
+        border-top: 1px solid #e9ecef;
+        padding: 1rem 1.5rem;
+    }
+    
+    /* Cards de produtos no modal */
+    .produto-card {
+        cursor: pointer;
+        transition: all 0.3s;
+        height: 100%;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+    }
+    
+    .produto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(123, 31, 162, 0.15);
+        border-color: #7b1fa2;
+    }
+    
+    .card-img-top {
+        height: 160px;
+        object-fit: cover;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.75rem;
+    }
+    
+    .card-text strong {
+        color: #7b1fa2;
+        font-size: 1.1rem;
+    }
+    
+    /* Lista de clientes */
+    #listaClientes {
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        display: none;
+    }
+    
+    .list-group-item {
+        padding: 0.75rem 1.25rem;
+        border: none;
+        border-bottom: 1px solid #f1f1f1;
+        transition: all 0.2s;
+    }
+    
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        color: #7b1fa2;
+    }
+    
+    /* Responsividade */
+    /* Se quiser tornar ainda mais compacto para mobile */
+    @media (max-width: 768px) {
+        .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
 <script>
 $(document).ready(function(){
     $('#nomeCliente').keyup(function(){
@@ -60,43 +256,50 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('keyup', '.produto', function(){
-        var query = $(this).val();
-        var lista = $(this).siblings('.listaProdutos');
-        if (query != '') {
-            $.ajax({
-                url: "buscarProdutos.php",
-                method: "GET",
-                data: {query: query},
-                success: function(data) {
-                    lista.fadeIn();
-                    lista.html(data);
-                }
-            });
-        } else {
-            lista.fadeOut();
-        }
-    });
-
     window.selecionarCliente = function(nome) {
         $('#nomeCliente').val(nome);
         $('#listaClientes').fadeOut();
     }
 
-    window.selecionarProduto = function(id, nome, elemento) {
-        $(elemento).closest('.produtoItem').find('.produto').val(nome);
-        $(elemento).closest('.produtoItem').find('.produto_id').val(id);
-        $(elemento).closest('.produtoItem').find('.listaProdutos').fadeOut();
+    // Carrega os produtos quando o modal é aberto
+    $('#modalProdutos').on('show.bs.modal', function () {
+        $.ajax({
+            url: "buscarTodosProdutos.php",
+            method: "GET",
+            success: function(data) {
+                $('#listaProdutosModal').html(data);
+            }
+        });
+    });
+
+    window.selecionarProduto = function(id, nome, preco, foto) {
+        // Encontra o campo de produto ativo (último clicado)
+        var produtoInput = $('.produto').filter(function() {
+            return $(this).is(':focus') || $(this).data('last-focused') === true;
+        });
+        
+        if (produtoInput.length === 0) {
+            // Se nenhum campo estava focado, usa o último campo de produto
+            produtoInput = $('.produto').last();
+        }
+        
+        produtoInput.val(nome);
+        produtoInput.closest('.produtoItem').find('.produto_id').val(id);
+        $('#modalProdutos').modal('hide');
     }
+
+    // Marca o campo de produto quando é clicado
+    $(document).on('click', '.produto', function() {
+        $('.produto').removeData('last-focused');
+        $(this).data('last-focused', true);
+    });
 
     $('#adicionarProduto').click(function(){
         var novoProduto = `
             <div class="produtoItem mb-3">
                 <label>Produto:</label>
-                <input type="text" class="form-control produto" autocomplete="off" required>
+                <input type="text" class="form-control produto" autocomplete="off" data-toggle="modal" data-target="#modalProdutos" readonly required>
                 <input type="hidden" name="produto_id[]" class="produto_id">
-
-                <div class="list-group mt-1 listaProdutos" style="position: absolute; z-index: 1000;"></div>
 
                 <label class="mt-2">Quantidade:</label>
                 <input type="number" name="quantidade[]" class="form-control quantidade" min="1" required>
