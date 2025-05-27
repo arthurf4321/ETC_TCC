@@ -82,21 +82,22 @@ CREATE TABLE `pedidos` (
 
 -- --------------------------------------------------------
 
--- Tabela: produtos
+-- Tabela: produtos (ATUALIZADA COM CAMPO DE FOTO)
 CREATE TABLE `produtos` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `descricao` text DEFAULT NULL,
   `preco` decimal(10,2) NOT NULL,
   `categoria` enum('açaí','adicional') NOT NULL,
-  `criado_por` int(11) DEFAULT NULL
+  `criado_por` int(11) DEFAULT NULL,
+  `foto` varchar(255) DEFAULT 'default.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Produtos de exemplo
-INSERT INTO `produtos` (`id`, `nome`, `descricao`, `preco`, `categoria`) VALUES
-(1, 'açai 300ml', 'Açaí tradicional na tigela de 300ml', 10.00, 'açaí'),
-(2, 'açai 500ml', 'Açaí tradicional na tigela de 500ml', 15.00, 'açaí'),
-(3, 'açai 700ml', 'Açaí tradicional na tigela de 700ml', 20.00, 'açaí');
+-- Produtos de exemplo (ATUALIZADOS COM CAMPO DE FOTO)
+INSERT INTO `produtos` (`id`, `nome`, `descricao`, `preco`, `categoria`, `foto`) VALUES
+(1, 'açai 300ml', 'Açaí tradicional na tigela de 300ml', 10.00, 'açaí', 'acai_300ml.jpg'),
+(2, 'açai 500ml', 'Açaí tradicional na tigela de 500ml', 15.00, 'açaí', 'acai_500ml.jpg'),
+(3, 'açai 700ml', 'Açaí tradicional na tigela de 700ml', 20.00, 'açaí', 'acai_700ml.jpg');
 
 -- --------------------------------------------------------
 

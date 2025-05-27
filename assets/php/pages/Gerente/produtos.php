@@ -2,16 +2,65 @@
 include('../../config/db.php');
 session_start();
 
+// Configurações para upload de imagem
+$uploadDir = '../../../uploads/produtos/';
+$allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+$maxSize = 2 * 1024 * 1024; // 2MB
+
+// Função para lidar com o upload da imagem
+function handleImageUpload($file, $uploadDir, $allowedTypes, $maxSize) {
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['status' => 'error', 'message' => 'Erro no upload da imagem'];
+    }
+
+    if (!in_array($file['type'], $allowedTypes)) {
+        return ['status' => 'error', 'message' => 'Tipo de arquivo não permitido'];
+    }
+
+    if ($file['size'] > $maxSize) {
+        return ['status' => 'error', 'message' => 'Arquivo muito grande (máx. 2MB)'];
+    }
+
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = uniqid('prod_') . '.' . $extension;
+    $destination = $uploadDir . $filename;
+
+    if (!move_uploaded_file($file['tmp_name'], $destination)) {
+        return ['status' => 'error', 'message' => 'Falha ao salvar a imagem'];
+    }
+
+    return ['status' => 'success', 'filename' => $filename];
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
     $id = $_POST['id'];
     $nome = $_POST['nome'];
     $descricao = $_POST['descricao'];
     $preco = $_POST['preco'];
     $categoria = $_POST['categoria'];
+    $fotoAtual = $_POST['foto_atual'] ?? 'default.png';
 
-    $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ? WHERE id = ?";
+    // Processar upload de nova imagem se fornecida
+    if (!empty($_FILES['foto']['name'])) {
+        $upload = handleImageUpload($_FILES['foto'], $uploadDir, $allowedTypes, $maxSize);
+        
+        if ($upload['status'] === 'success') {
+            $foto = $upload['filename'];
+            // Remover a imagem antiga se não for a padrão
+            if ($fotoAtual !== 'default.png' && file_exists($uploadDir . $fotoAtual)) {
+                unlink($uploadDir . $fotoAtual);
+            }
+        } else {
+            echo json_encode($upload);
+            exit;
+        }
+    } else {
+        $foto = $fotoAtual;
+    }
+
+    $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, foto = ? WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    if ($stmt->execute([$nome, $descricao, $preco, $categoria, $id])) {
+    if ($stmt->execute([$nome, $descricao, $preco, $categoria, $foto, $id])) {
         echo json_encode(['status' => 'success', 'message' => 'Produto atualizado com sucesso!']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Erro ao atualizar produto.']);
@@ -20,12 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
-    error_log(print_r($_POST, true));
-    
     $nome = $_POST['nome'] ?? '';
     $descricao = $_POST['descricao'] ?? '';
     $preco = $_POST['preco'] ?? 0;
     $categoria = $_POST['categoria'] ?? '';
+    $foto = 'default.png';
+
+    // Processar upload de imagem se fornecida
+    if (!empty($_FILES['foto']['name'])) {
+        $upload = handleImageUpload($_FILES['foto'], $uploadDir, $allowedTypes, $maxSize);
+        
+        if ($upload['status'] === 'success') {
+            $foto = $upload['filename'];
+        } else {
+            echo json_encode($upload);
+            exit;
+        }
+    }
 
     if (empty($nome) || empty($categoria) || $preco <= 0) {
         echo json_encode([
@@ -36,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     }
 
     try {
-        $sql = "INSERT INTO produtos (nome, descricao, preco, categoria) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO produtos (nome, descricao, preco, categoria, foto) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         
-        if ($stmt->execute([$nome, $descricao, $preco, $categoria])) {
+        if ($stmt->execute([$nome, $descricao, $preco, $categoria, $foto])) {
             echo json_encode([
                 'status' => 'success', 
                 'message' => 'Produto cadastrado com sucesso!',
@@ -62,9 +122,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     $id = $_GET['excluir'];
+    // Obter informações do produto para remover a imagem
+    $sql = "SELECT foto FROM produtos WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $produto = $stmt->fetch();
+    
     $sql = "DELETE FROM produtos WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     if ($stmt->execute([$id])) {
+        // Remover a imagem se não for a padrão
+        if ($produto && $produto['foto'] !== 'default.png' && file_exists($uploadDir . $produto['foto'])) {
+            unlink($uploadDir . $produto['foto']);
+        }
         echo json_encode(['status' => 'success', 'message' => 'Produto excluído com sucesso!']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir produto.']);
@@ -72,11 +142,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['excluir'])) {
     exit;
 }
 
-$sql = "SELECT id, nome, descricao, preco, categoria FROM produtos ORDER BY nome";
+$sql = "SELECT id, nome, descricao, preco, categoria, foto FROM produtos ORDER BY nome";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
+<style>
+    .produto-img {
+        max-width: 90px;  /* Aumentei de 50px para 80px */
+        max-height: 90px; /* Aumentei de 50px para 80px */
+        border-radius: 4px;
+        object-fit: cover;
+        transition: transform 0.3s ease; /* Adicionei um efeito de hover opcional */
+    }
+
+    /* Efeito de zoom opcional ao passar o mouse */
+    .produto-img:hover {
+        transform: scale(1.2);
+        z-index: 10;
+        position: relative;
+    }
+    .img-preview {
+        max-width: 100px;
+        max-height: 100px;
+        margin-top: 10px;
+        display: none;
+    }
+    .custom-file-label::after {
+        content: "Procurar";
+    }
+</style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0" style="color: #7b1fa2;">
@@ -101,6 +197,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <thead class="" style="background-color: #7b1fa2">
             <tr>
                 <th width="70" style="color: white;">ID</th>
+                <th width="100" style="color: white;">Imagem</th>
                 <th style="color: white;">Nome</th>
                 <th style="color: white;">Descrição</th>
                 <th width="120" style="color: white;">Preço</th>
@@ -111,7 +208,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tbody>
             <?php if (empty($produtos)): ?>
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="7" class="text-center text-muted py-4">
                         <i class="fas fa-box-open fa-2x mb-2"></i><br>
                         Nenhum produto cadastrado
                     </td>
@@ -120,6 +217,11 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($produtos as $produto): ?>
                     <tr>
                         <td><?= htmlspecialchars($produto['id']); ?></td>
+                        <td>
+                            <img src="../../../uploads/produtos/<?= htmlspecialchars($produto['foto'] ?? 'default.png'); ?>" 
+                                 class="produto-img" 
+                                 alt="<?= htmlspecialchars($produto['nome']); ?>">
+                        </td>
                         <td><?= htmlspecialchars($produto['nome']); ?></td>
                         <td><?= htmlspecialchars($produto['descricao']); ?></td>
                         <td>R$ <?= number_format($produto['preco'], 2, ',', '.'); ?></td>
@@ -136,6 +238,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 data-descricao="<?= htmlspecialchars($produto['descricao']); ?>"
                                 data-preco="<?= htmlspecialchars($produto['preco']); ?>"
                                 data-categoria="<?= htmlspecialchars($produto['categoria']); ?>"
+                                data-foto="<?= htmlspecialchars($produto['foto']); ?>"
                                 data-toggle="tooltip" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -164,9 +267,22 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formEditarProduto">
+            <form id="formEditarProduto" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" name="id" id="editId">
+                    <input type="hidden" name="foto_atual" id="editFotoAtual">
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-camera mr-1"></i> Foto do Produto</label>
+                        <div>
+                            <img id="editPreviewFoto" src="" style="max-width: 100px; display: none;" class="img-thumbnail mb-2">
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="editFoto" name="foto" accept="image/*">
+                            <label class="custom-file-label" for="editFoto">Alterar imagem...</label>
+                        </div>
+                        <small class="form-text text-muted">Deixe em branco para manter a imagem atual</small>
+                    </div>
                     
                     <div class="form-group">
                         <label for="editNome"><i class="fas fa-tag mr-1"></i> Nome do Produto</label>
@@ -224,8 +340,20 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formCadastrarProduto">
+            <form id="formCadastrarProduto" enctype="multipart/form-data">
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="foto"><i class="fas fa-camera mr-1"></i> Foto do Produto</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="foto" name="foto" accept="image/*">
+                            <label class="custom-file-label" for="foto">Escolher arquivo...</label>
+                        </div>
+                        <small class="form-text text-muted">Formatos: JPG, PNG, GIF (máx. 2MB)</small>
+                        <div class="mt-2">
+                            <img id="previewFoto" src="" style="max-width: 100px; display: none;" class="img-thumbnail">
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="nome"><i class="fas fa-tag mr-1"></i> Nome do Produto</label>
                         <input type="text" name="nome" id="nome" class="form-control" required
@@ -290,6 +418,45 @@ function initProdutoModal() {
         $('#novoProdutoModal').modal('show');
     });
 
+    // Preview da imagem para novo produto
+    $('#foto').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#previewFoto').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(file);
+            $(this).next('.custom-file-label').addClass("selected").html(file.name);
+        } else {
+            $('#previewFoto').hide();
+            $(this).next('.custom-file-label').removeClass("selected").html('Escolher arquivo...');
+        }
+    });
+
+    // Preview da imagem para edição
+    $('#editFoto').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#editPreviewFoto').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(file);
+            $(this).next('.custom-file-label').addClass("selected").html(file.name);
+        } else {
+            $(this).next('.custom-file-label').removeClass("selected").html('Alterar imagem...');
+        }
+    });
+
+    // Ao abrir o modal de edição, carregar a imagem atual
+    $(document).on('click', '.btn-editar', function() {
+        const foto = $(this).data('foto') || 'default.png';
+        $('#editPreviewFoto').attr('src', '../../../assets/uploads/produtos/' + foto).show();
+        $('#editFotoAtual').val(foto);
+    });
+
+    // AJAX para cadastrar produto
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         
@@ -329,7 +496,8 @@ function initProdutoModal() {
             return false;
         }
         
-        const formData = $(this).serialize();
+        const formData = new FormData(this);
+        formData.append('cadastrar', '1');
        
         const submitBtn = $(this).find('[type="submit"]');
         const originalText = submitBtn.html();
@@ -339,7 +507,9 @@ function initProdutoModal() {
         $.ajax({
             url: 'produtos.php',
             method: 'POST',
-            data: formData + '&cadastrar=1',
+            data: formData,
+            processData: false,
+            contentType: false,
             dataType: 'json',
             success: function(response) {
                 console.log('Resposta do servidor:', response);
@@ -355,6 +525,7 @@ function initProdutoModal() {
                         $('#novoProdutoModal').modal('hide');
                         $('#formCadastrarProduto')[0].reset();
                         $('.custom-file-label').html('Escolher arquivo...');
+                        $('#previewFoto').hide();
                         
                         if (typeof carregarPagina === 'function') {
                             carregarPagina('produtos.php');
@@ -384,11 +555,113 @@ function initProdutoModal() {
             }
         });
     });
+
+    // AJAX para editar produto
+    $('#formEditarProduto').off('submit').on('submit', function(e) {
+        e.preventDefault();
+        
+        const nome = $('#editNome').val().trim();
+        const preco = parseFloat($('#editPreco').val());
+        const categoria = $('#editCategoria').val();
+        
+        let errors = [];
+        
+        if (!nome) {
+            errors.push('O nome do produto é obrigatório');
+            $('#editNome').addClass('is-invalid');
+        } else {
+            $('#editNome').removeClass('is-invalid');
+        }
+        
+        if (isNaN(preco) || preco <= 0) {
+            errors.push('O preço deve ser um valor maior que zero');
+            $('#editPreco').addClass('is-invalid');
+        } else {
+            $('#editPreco').removeClass('is-invalid');
+        }
+        
+        if (!categoria) {
+            errors.push('Selecione uma categoria');
+            $('#editCategoria').addClass('is-invalid');
+        } else {
+            $('#editCategoria').removeClass('is-invalid');
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro no formulário',
+                html: errors.join('<br>')
+            });
+            return false;
+        }
+        
+        const formData = new FormData(this);
+        formData.append('editar', '1');
+       
+        const submitBtn = $(this).find('[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Salvando...');
+        submitBtn.prop('disabled', true);
+        
+        $.ajax({
+            url: 'produtos.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                console.log('Resposta do servidor:', response);
+                
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        $('#editarProdutoModal').modal('hide');
+                        
+                        if (typeof carregarPagina === 'function') {
+                            carregarPagina('produtos.php');
+                        } else {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: response.message || 'Erro ao atualizar produto'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro na requisição:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de conexão',
+                    text: 'Não foi possível conectar ao servidor. Tente novamente.'
+                });
+            },
+            complete: function() {
+                submitBtn.html(originalText);
+                submitBtn.prop('disabled', false);
+            }
+        });
+    });
     
     $('#novoProdutoModal').on('hidden.bs.modal', function() {
         $('#formCadastrarProduto')[0].reset();
         $('.custom-file-label').html('Escolher arquivo...');
         $('#nome, #preco, #categoria').removeClass('is-invalid');
+        $('#previewFoto').hide();
+    });
+
+    $('#editarProdutoModal').on('hidden.bs.modal', function() {
+        $('#editNome, #editPreco, #editCategoria').removeClass('is-invalid');
     });
 }
 
