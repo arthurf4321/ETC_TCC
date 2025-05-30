@@ -20,7 +20,12 @@
                             <p>Cadastro de Funcionarios</p>
                         </a>
                     </li>
-                    
+                    <li class="nav-item">
+                        <a href="dashboard.php" class="nav-link">
+                            <i class="nav-icon fas fa-user-plus text-white"></i>
+                            <p>Dashboard do sistema</p>
+                        </a>
+                    </li>                  
                 <?php endif; ?>
                 <li class="nav-item d-md-none">
                     <a href="../home.php" class="nav-link text-danger">
