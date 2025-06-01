@@ -83,6 +83,16 @@ try {
         background-color: #6f42c1;
         color: white;
     }
+    .btn-danger {
+    background-color: #dc3545;
+    color: white;
+    font-weight: bold;
+    border: none;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+        color: white;
+    }
 </style>
 
 <div class="table-responsive table-pedidos-prontos">
@@ -124,6 +134,9 @@ try {
                     <td>
                         <button class="btn btn-finalizar btn-sm finalizar-pedido" data-id="<?= htmlspecialchars($pedido['id']) ?>">
                             <i class="fas fa-check-circle mr-1"></i> Finalizar
+                        </button>
+                        <button class="btn btn-danger btn-sm cancelar-pedido" data-id="<?= htmlspecialchars($pedido['id']) ?>">
+                            <i class="fas fa-times-circle mr-1"></i> Cancelar
                         </button>
                     </td>
                 </tr>

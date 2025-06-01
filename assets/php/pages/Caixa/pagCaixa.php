@@ -400,6 +400,61 @@ $(document).on('click', '.finalizar-pedido', function () {
         }
     });
 });
+
+// Cancelar pedido
+$(document).on('click', '.cancelar-pedido', function() {
+    const pedidoId = $(this).data('id');
+    const btn = $(this);
+    
+    btn.html('<i class="fas fa-spinner fa-spin"></i>');
+    btn.prop('disabled', true);
+    
+    Swal.fire({
+        title: 'Confirmar Cancelamento',
+        text: "Deseja cancelar o pedido #" + pedidoId + "?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.post('../../pages/Caixa/cancelar_pedido.php', { pedido_id: pedidoId }, function(resposta) {
+                if (resposta.trim() === 'sucesso') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Pedido cancelado com sucesso.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Recarrega o conteúdo dinâmico (pedidos_prontos.php)
+                        carregarPagina('pedidos_prontos.php');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Falha ao cancelar pedido.'
+                    });
+                }
+            }).fail(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Falha na comunicação com o servidor.'
+                });
+            }).always(function() {
+                btn.html('Cancelar');
+                btn.prop('disabled', false);
+            });
+        } else {
+            btn.html('Cancelar');
+            btn.prop('disabled', false);
+        }
+    });
+});
 </script>
 </body>
 </html>

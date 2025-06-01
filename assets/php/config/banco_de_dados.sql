@@ -74,7 +74,7 @@ CREATE TABLE `pagamentos` (
 CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
-  `status` enum('recebido','preparando','pronto','finalizado') NOT NULL,
+  `status` enum('recebido','preparando','pronto','finalizado', 'cancelado') NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `data_pedido` timestamp NOT NULL DEFAULT current_timestamp(),
   `registrado_por` int(11) DEFAULT NULL
