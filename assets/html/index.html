@@ -10,34 +10,207 @@
     <link rel="stylesheet" href="../CSS/login.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../JS/loginController.js" defer></script>
 </head>
 <body>
-    <div class="login-container animate__animated animate__fadeInRight">
-        <h1 class="login-title"><i class=""></i> Login</h1>
+    <div class="login-wrapper">
+        <div class="login-container animate__animated animate__fadeInRight">
+            <h1 class="login-title"><i class=""></i> Login</h1>
 
-        <form id="formLogin" method="POST">
-            <div class="form-group">
-                <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                <input type="email" id="email" name="email" placeholder="seuemail@gmail.com" required>
-            </div>
+            <form id="formLogin" method="POST">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" name="email" placeholder="seuemail@gmail.com" required>
+                </div>
 
-            <div class="form-group">
-                <label for="senha"><i class="fas fa-lock"></i> Senha</label>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-            </div>
-            
-            <button type="submit" class="btn-login">
-                <i class="fas fa-sign-in-alt"></i> Acessar Sistema
-            </button>
-        </form>
+                <div class="form-group">
+                    <label for="senha"><i class="fas fa-lock"></i> Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+                </button>
+
+                <div class="text-center mt-3">
+                    <a href="#" id="esqueciSenha" class="text-muted">Esqueci minha senha</a>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Modal para recuperação de senha -->
+    <div class="modal fade" id="recuperarSenhaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar Senha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRecuperarSenha">
+                        <div class="mb-3">
+                            <label for="emailRecuperacao" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailRecuperacao" required>
+                        </div>
+                        <div class="mb-3" id="codigoContainer" style="display: none;">
+                            <label for="codigoVerificacao" class="form-label">Código de Verificação</label>
+                            <input type="text" class="form-control" id="codigoVerificacao" required>
+                        </div>
+                        <div class="mb-3" id="novaSenhaContainer" style="display: none;">
+                            <label for="novaSenha" class="form-label">Nova Senha</label>
+                            <input type="password" class="form-control" id="novaSenha" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="btnRecuperarSenha">
+                            <span id="btnText">Enviar Código</span>
+                            <span id="btnLoading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Processando...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loginContainer = document.querySelector('.login-container');
             loginContainer.classList.add('animate__fadeInRight');
+
+            const recuperarSenhaModal = new bootstrap.Modal(document.getElementById('recuperarSenhaModal'));
+    
+            document.getElementById('esqueciSenha').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('formRecuperarSenha').reset();
+                document.getElementById('codigoContainer').style.display = 'none';
+                document.getElementById('novaSenhaContainer').style.display = 'none';
+                document.getElementById('btnText').textContent = 'Enviar Código';
+                recuperarSenhaModal.show();
+            });
+
+            document.getElementById('formRecuperarSenha').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleRecuperacaoSenha();
+            });
         });
+
+        function handleRecuperacaoSenha() {
+            const email = document.getElementById('emailRecuperacao').value;
+            const codigoVerificacao = document.getElementById('codigoVerificacao').value;
+            const novaSenha = document.getElementById('novaSenha').value;
+            const btnRecuperarSenha = document.getElementById('btnRecuperarSenha');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const codigoContainer = document.getElementById('codigoContainer');
+            const novaSenhaContainer = document.getElementById('novaSenhaContainer');
+            
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+            btnRecuperarSenha.disabled = true;
+
+            if (!codigoContainer.style.display || codigoContainer.style.display === 'none') {
+
+                enviarCodigoVerificacao(email);
+            } else {
+                verificarCodigoEAtualizarSenha(email, codigoVerificacao, novaSenha);
+            }
+        }
+
+        function enviarCodigoVerificacao(email) {
+            setTimeout(() => {
+                const codigoGerado = Math.floor(100000 + Math.random() * 900000).toString();
+                
+                console.log(`Código enviado para ${email}: ${codigoGerado}`);
+                
+                sessionStorage.setItem('codigoRecuperacao', codigoGerado);
+                sessionStorage.setItem('emailRecuperacao', email);
+                
+                document.getElementById('codigoContainer').style.display = 'block';
+                document.getElementById('novaSenhaContainer').style.display = 'block';
+                document.getElementById('btnText').textContent = 'Redefinir Senha';
+                
+                document.getElementById('btnText').style.display = 'inline-block';
+                document.getElementById('btnLoading').style.display = 'none';
+                document.getElementById('btnRecuperarSenha').disabled = false;
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Código enviado!',
+                    text: 'Um código de verificação foi enviado para seu email.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }, 1500);
+        }
+
+        function verificarCodigoEAtualizarSenha(email, codigoDigitado, novaSenha) {
+            const codigoArmazenado = sessionStorage.getItem('codigoRecuperacao');
+            const emailArmazenado = sessionStorage.getItem('emailRecuperacao');
+            
+            if (email !== emailArmazenado || codigoDigitado !== codigoArmazenado) {
+                document.getElementById('btnText').style.display = 'inline-block';
+                document.getElementById('btnLoading').style.display = 'none';
+                document.getElementById('btnRecuperarSenha').disabled = false;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Código inválido',
+                    text: 'O código de verificação não corresponde. Por favor, tente novamente.',
+                });
+                return;
+            }
+            
+            fetch('../PHP/recuperar_senha.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    novaSenha: novaSenha
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Senha redefinida!',
+                        text: 'Sua senha foi atualizada com sucesso.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('recuperarSenhaModal')).hide();
+                        
+                        sessionStorage.removeItem('codigoRecuperacao');
+                        sessionStorage.removeItem('emailRecuperacao');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: data.message || 'Ocorreu um erro ao redefinir sua senha.',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Falha na comunicação com o servidor.',
+                });
+            })
+            .finally(() => {
+                document.getElementById('btnText').style.display = 'inline-block';
+                document.getElementById('btnLoading').style.display = 'none';
+                document.getElementById('btnRecuperarSenha').disabled = false;
+            });
+        }
     </script>
 </body>
-</html>
+</html

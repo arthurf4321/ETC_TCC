@@ -4,18 +4,22 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Novo wrapper para centralizar o conteúdo */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .login-container {
     background-color: #fffffe;
     border-radius: 15px;
-    margin-left: 90px;
     width: 420px;
     padding: 30px;
     box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5);
@@ -85,4 +89,37 @@ input:focus {
 
 .btn-login i {
     margin-right: 8px;
+}
+
+#esqueciSenha {
+    color: #6A1B9A;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#esqueciSenha:hover {
+    color: #591781;
+    text-decoration: underline;
+}
+
+/* Estilo do modal */
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+    color: #6A1B9A;
+}
+
+/* Garante que o modal apareça sobreposto corretamente */
+.modal {
+    z-index: 1055;
+}
+
+.modal-backdrop.show {
+    z-index: 1050;
 }

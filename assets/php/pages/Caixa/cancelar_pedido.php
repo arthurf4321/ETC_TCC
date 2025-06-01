@@ -4,7 +4,6 @@ include('../../config/db.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido_id'])) {
     $pedidoId = intval($_POST['pedido_id']);
 
-    // Atualizar status do pedido para "Cancelado"
     $stmt = $pdo->prepare("UPDATE pedidos SET status = 'cancelado' WHERE id = ?");
     $success = $stmt->execute([$pedidoId]);
 

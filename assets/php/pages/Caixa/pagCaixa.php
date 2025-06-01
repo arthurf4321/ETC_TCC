@@ -230,33 +230,27 @@ function initDynamicContent() {
 
 function configurarFormulariosAJAX() {
 
-    // FORMULARIO EDITAR FUNCIONARIO - sem alerta especial
     $('#formEditarFuncionario').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'visualizarContas.php', 'editar', false);
     });
     
-    // FORMULARIO EDITAR CLIENTE - mostra alerta sucesso
     $('#formEditarCliente').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'visualizarContasClientes.php', 'editar', true);
     });
 
-    // FORMULARIO EDITAR PRODUTO - sem alerta especial
     $('#formEditarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'produtos.php', 'editar', false);
     });
     
-    // FORMULARIO CADASTRAR PRODUTO - sem alerta especial
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         enviarFormularioAJAX($(this), 'produtos.php', 'cadastrar', false);
     });
 }
 
-// Função genérica para enviar formulários via AJAX
-// quarto parâmetro indica se deve mostrar alerta sucesso personalizado
 function enviarFormularioAJAX(form, url, action, mostrarAlertaSucesso) {
     const submitBtn = form.find('[type="submit"]');
     const originalText = submitBtn.html();
@@ -290,7 +284,6 @@ function enviarFormularioAJAX(form, url, action, mostrarAlertaSucesso) {
                         }
                     });
                 } else {
-                    // Recarrega sem alerta especial
                     const currentPage = window.location.pathname.split('/').pop() || url.replace('.php', '') + '.php';
                     if (typeof carregarPagina === 'function') {
                         carregarPagina(currentPage);
@@ -346,7 +339,6 @@ function carregarPedidosProntos() {
     });
 }
 
-// Substitua esta função existente
 $(document).on('click', '.finalizar-pedido', function () {
     const pedidoId = $(this).data('id');
     const btn = $(this);
@@ -374,7 +366,6 @@ $(document).on('click', '.finalizar-pedido', function () {
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
-                        // Recarrega o conteúdo dinâmico (pedidos_prontos.php)
                         carregarPagina('pedidos_prontos.php');
                     });
                 } else {
@@ -401,7 +392,7 @@ $(document).on('click', '.finalizar-pedido', function () {
     });
 });
 
-// Cancelar pedido
+
 $(document).on('click', '.cancelar-pedido', function() {
     const pedidoId = $(this).data('id');
     const btn = $(this);
@@ -429,7 +420,6 @@ $(document).on('click', '.cancelar-pedido', function() {
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
-                        // Recarrega o conteúdo dinâmico (pedidos_prontos.php)
                         carregarPagina('pedidos_prontos.php');
                     });
                 } else {

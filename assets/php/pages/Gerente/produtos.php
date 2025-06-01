@@ -445,7 +445,6 @@ function initProdutoModal() {
         $('#editFotoAtual').val(foto);
     });
 
-    // AJAX para cadastrar produto
     $('#formCadastrarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         
@@ -545,7 +544,6 @@ function initProdutoModal() {
         });
     });
 
-    // AJAX para editar produto
     $('#formEditarProduto').off('submit').on('submit', function(e) {
         e.preventDefault();
         

@@ -220,8 +220,7 @@ verificarAcesso(['gerente']);
                         </div>
                     </div>
                 </div>
-                
-                <!-- Gráficos e Tabelas -->
+              
                 <div class="row mt-4">
                     <div class="col-lg-8">
                         <div class="chart-container">

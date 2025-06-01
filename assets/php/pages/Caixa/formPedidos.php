@@ -39,7 +39,6 @@
     </div>
 </div>
 
-<!-- Modal para seleção de produtos -->
 <div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="modalProdutosLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -51,7 +50,7 @@
             </div>
             <div class="modal-body">
                 <div class="row" id="listaProdutosModal">
-                    <!-- Produtos serão carregados aqui via AJAX -->
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -62,7 +61,6 @@
 </div>
 
 <style>
-    /* Estilo geral do card principal */
     
     label {
         font-weight: 500;
@@ -83,8 +81,7 @@
         border-color: #7b1fa2;
         box-shadow: 0 0 0 0.2rem rgba(123, 31, 162, 0.15);
     }
-    
-    /* Estilo específico para o campo de produto */
+ 
     .produto {
         background-color: #ffffff !important;
         cursor: pointer;
@@ -93,8 +90,7 @@
         background-position: right 12px center;
         padding-right: 35px;
     }
-    
-    /* Estilo para os itens de produto */
+ 
     .produtoItem {
         background-color: #ffffff;
         padding: 1.25rem;
@@ -109,15 +105,14 @@
         border-color: #d1d1d1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
-    
-    /* Estilo para os botões */
+
     .btn {
-        padding: 0.5rem 1rem; /* Reduzido de 0.75rem 1.5rem */
+        padding: 0.5rem 1rem; 
         border-radius: 6px;
         font-weight: 500;
         transition: all 0.3s;
         border: none;
-        font-size: 0.9rem; /* Adicionado tamanho de fonte menor */
+        font-size: 0.9rem; 
     }
     
     
@@ -127,10 +122,9 @@
 
     .btn-success:hover {
         background-color: #218838;
-        transform: translateY(-1px); /* Efeito hover mais sutil */
+        transform: translateY(-1px); 
     }
 
-        /* Modal de produtos */
     .modal-content {
         border: none;
         border-radius: 10px;
@@ -158,8 +152,7 @@
         border-top: 1px solid #e9ecef;
         padding: 1rem 1.5rem;
     }
-    
-    /* Cards de produtos no modal */
+ 
     .produto-card {
         cursor: pointer;
         transition: all 0.3s;
@@ -227,8 +220,6 @@
         color: #7b1fa2;
     }
     
-    /* Responsividade */
-    /* Se quiser tornar ainda mais compacto para mobile */
     @media (max-width: 768px) {
         .btn {
             padding: 0.4rem 0.8rem;
@@ -261,7 +252,6 @@ $(document).ready(function(){
         $('#listaClientes').fadeOut();
     }
 
-    // Carrega os produtos quando o modal é aberto
     $('#modalProdutos').on('show.bs.modal', function () {
         $.ajax({
             url: "buscarTodosProdutos.php",
@@ -273,13 +263,11 @@ $(document).ready(function(){
     });
 
     window.selecionarProduto = function(id, nome, preco, foto) {
-        // Encontra o campo de produto ativo (último clicado)
         var produtoInput = $('.produto').filter(function() {
             return $(this).is(':focus') || $(this).data('last-focused') === true;
         });
         
         if (produtoInput.length === 0) {
-            // Se nenhum campo estava focado, usa o último campo de produto
             produtoInput = $('.produto').last();
         }
         
@@ -288,7 +276,6 @@ $(document).ready(function(){
         $('#modalProdutos').modal('hide');
     }
 
-    // Marca o campo de produto quando é clicado
     $(document).on('click', '.produto', function() {
         $('.produto').removeData('last-focused');
         $(this).data('last-focused', true);
