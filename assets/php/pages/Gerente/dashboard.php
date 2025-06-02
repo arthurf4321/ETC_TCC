@@ -165,13 +165,13 @@ verificarAcesso(['gerente']);
                                 <div>
                                     <div class="card-title">Vendas Hoje</div>
                                     <div class="card-value">
-                                        <?php
+                                       <?php
                                         $hoje = date('Y-m-d');
-                                        $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM pedidos WHERE DATE(data_pedido) = ?");
-                                        $stmt->execute([$hoje]);
+                                        $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM pedidos WHERE DATE(data_pedido) = ? AND status = ?");
+                                        $stmt->execute([$hoje, 'finalizado']);
                                         $result = $stmt->fetch();
                                         echo $result['total'];
-                                        ?>
+                                    ?>
                                     </div>
                                 </div>
                                 <div class="card-icon align-self-center">
