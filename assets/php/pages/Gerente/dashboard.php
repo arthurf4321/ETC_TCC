@@ -1,6 +1,7 @@
 <?php
 include('../../auth/verificarPermissão.php');
 include('../../config/db.php');
+date_default_timezone_set('America/Sao_Paulo');
 verificarAcesso(['gerente']);
 ?>
 
