@@ -1,6 +1,6 @@
 # 🟣 Sistema de Gestão de Pedidos – Loja de Açaí – *Pé de Açaí* 🌴🍧
 
-![Tela do sistema - Gerente](./sistema_gerente.jpeg)
+![Tela do sistema - Gerente](./Tela_login.jpeg)
 
 Este é um sistema desenvolvido para otimizar a gestão de pedidos e a comunicação entre os funcionários em uma loja de açaí.  
 O projeto foi desenvolvido como parte do **Trabalho de Conclusão de Curso (TCC)** na **Escola Técnica de Ceilândia**.
@@ -35,7 +35,7 @@ O projeto foi desenvolvido como parte do **Trabalho de Conclusão de Curso (TCC)
 
 Abaixo, uma visualização da interface com painel administrativo para o cargo de **Gerente**:
 
-![Interface do sistema - Gerente](./sistema_gerente.jpeg)
+![Interface do sistema - Gerente](./Tela_Gerente.jpeg)
 
 ---
 
