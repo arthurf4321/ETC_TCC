@@ -9,8 +9,7 @@ O projeto foi desenvolvido como parte do **Trabalho de Conclusão de Curso (TCC)
 
 - Facilitar o registro de pedidos e o acompanhamento do status.
 - Organizar o fluxo de trabalho entre os setores (Caixa, Preparador e Gerente).
-- Permitir a gestão de produtos, contas de funcionários e clientes.
-- Oferecer uma interface limpa, responsiva e funcional para cada tipo de usuário.
+- Oferecer uma interface limpa funcional para cada tipo de usuário.
 
 ---
 
@@ -44,16 +43,5 @@ Abaixo, uma visualização da interface com painel administrativo para o cargo d
 
 - **Caixa**: realiza pedidos e gerencia o atendimento.
 - **Preparador**: visualiza e altera o status dos pedidos.
-- **Gerente**: gerencia produtos, contas e funcionários.
+- **Gerente**: gerencia produtos, contas de clientes e funcionários.
 
----
-
-## 💬 Sobre o Projeto
-
-Esse sistema foi pensado para simular uma situação real de um comércio local, unindo a prática da programação com a necessidade de soluções úteis para o dia a dia. Toda a lógica foi implementada considerando a segurança, usabilidade e clareza nas funções.
-
----
-
-## 📎 Repositório
-
-🔗 [github.com/arthurf4321/ETC_TCC](https://github.com/arthurf4321/ETC_TCC)
